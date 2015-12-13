@@ -1,6 +1,6 @@
 {
     "name": "photon-wdgs",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "stasheddragon",
     "license": "MIT",
     "description": "Library to employ independent and window watch dogs of STM32F205 for the Particle Photon."
