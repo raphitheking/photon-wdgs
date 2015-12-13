@@ -31,8 +31,8 @@ namespace PhotonWdgs{
     extern IntervalTimer _wdgTimer;
     extern unsigned long _aliveCount;
     extern unsigned long _timeoutval;
-    extern bool _wwdg_running;
-    extern bool _iwdg_running;
+    extern bool _wwdgRunning;
+    extern bool _iwdgRunning;
     
     void _tickleWDGs();
 
@@ -44,7 +44,7 @@ namespace PhotonWdgs{
      * the HW timer is specified using the TIMER constants from SparkIntervalTimer
      * library. We recommend using TIMER7.
      */
-    void begin(bool _enable_wwdg,bool _enable_iwdg,unsigned long _timeout, TIMid id);
+    void begin(bool _enableWwdg,bool _enableIwdg,unsigned long _timeout, TIMid id);
     /* @brief When having activated one or both watchdogs you need to call this
      * function regularly from your program. If you don't call it during or before
      * the specified timeout is reached, the watchdog(s) will reset.
