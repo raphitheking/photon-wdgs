@@ -1,0 +1,3 @@
+[submodule "firmware/SparkIntervalTimer"]
+	path = firmware/SparkIntervalTimer
+	url = https://github.com/pkourany/SparkIntervalTimer
