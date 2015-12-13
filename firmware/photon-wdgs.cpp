@@ -1,4 +1,5 @@
 #include "photon-wdgs.h"
+#include "SparkIntervalTimer/SparkIntervalTimer.h"
 IntervalTimer PhotonWdgs::_wdgTimer;
 unsigned long PhotonWdgs::_aliveCount;
 unsigned long PhotonWdgs::_timeoutval;
@@ -60,5 +61,5 @@ void PhotonWdgs::begin(bool _enable_wwdg,bool _enable_iwdg,unsigned long _timeou
 
 void PhotonWdgs::tickle() {
     PhotonWdgs::_aliveCount = 0;
-}#include "photon-wdgs.h"
+}
 

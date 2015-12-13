@@ -1,5 +1,5 @@
 // This #include statement was automatically added by the Particle IDE.
-#include "photon-wdgs.h"
+#include "photon-wdgs/photon-wdgs.h"
 
 
 
