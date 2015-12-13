@@ -26,17 +26,18 @@ SOFTWARE.
 IntervalTimer PhotonWdgs::_wdgTimer;
 unsigned long PhotonWdgs::_aliveCount;
 unsigned long PhotonWdgs::_timeoutval;
-bool PhotonWdgs::_wwdg_running;
-bool PhotonWdgs::_iwdg_running;
+bool PhotonWdgs::_wwdgRunning;
+bool PhotonWdgs::_iwdgRunning;
 
 
 
-void PhotonWdgs::_tickleWDGs() {
+void PhotonWdgs::_tickleWDGs() 
+{
     if(_aliveCount < PhotonWdgs::_timeoutval) {
-        if(PhotonWdgs::_iwdg_running) {
+        if(PhotonWdgs::_wwdgRunning) {
             WWDG_SetCounter(0x7F);
         }
-        if(PhotonWdgs::_iwdg_running) {
+        if(PhotonWdgs::_iwdgRunning) {
             IWDG_ReloadCounter();
         }
         PhotonWdgs::_aliveCount++;
@@ -51,8 +52,9 @@ void PhotonWdgs::_tickleWDGs() {
     }
 }
 
-void PhotonWdgs::begin(bool _enable_wwdg,bool _enable_iwdg,unsigned long _timeout, TIMid id) {
-    if(!_enable_wwdg && !_enable_iwdg) {
+void PhotonWdgs::begin(bool _enableWwdg,bool _enableIwdg,unsigned long _timeout, TIMid id) 
+{
+    if(!_enableWwdg && !_enableIwdg) {
         // nothing to do ...
         return;
     }
@@ -64,15 +66,15 @@ void PhotonWdgs::begin(bool _enable_wwdg,bool _enable_iwdg,unsigned long _timeou
     PhotonWdgs::_wdgTimer.begin(PhotonWdgs::_tickleWDGs, 20, hmSec, id);
     // OTA updates won't work with watchdog enabled
     System.disableUpdates();
-    PhotonWdgs::_wwdg_running = _enable_wwdg;
-    if(_enable_wwdg) {
+    PhotonWdgs::_wwdgRunning = _enableWwdg;
+    if(_enableWwdg) {
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_WWDG, ENABLE);
         WWDG_SetPrescaler(WWDG_Prescaler_8);
         WWDG_SetWindowValue(0x7F);
         WWDG_Enable(0x7F);
     }
-    PhotonWdgs::_iwdg_running = _enable_iwdg;
-    if(_enable_iwdg) {
+    PhotonWdgs::_iwdgRunning = _enableIwdg;
+    if(_enableIwdg) {
         IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
         IWDG_SetPrescaler(IWDG_Prescaler_256);
         IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
@@ -82,7 +84,8 @@ void PhotonWdgs::begin(bool _enable_wwdg,bool _enable_iwdg,unsigned long _timeou
     }
 }
 
-void PhotonWdgs::tickle() {
+void PhotonWdgs::tickle() 
+{
     PhotonWdgs::_aliveCount = 0;
 }
 

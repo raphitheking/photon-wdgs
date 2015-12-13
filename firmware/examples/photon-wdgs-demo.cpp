@@ -35,6 +35,13 @@ unsigned long lastmsg=millis();
 void setup() {
     
     Particle.publish("watchdog_test", "Onlinev1");
+/* Start both watchdogs: the WWDG and IWDG.
+ * It is recommended to use both watchdogs. They run on different
+ * HW clocks (the WWDG same as your code, IWDG on its own).
+ * 
+ * This library depends on SparkIntervalTimer (see https://github.com/pkourany/SparkIntervalTimer)
+ * To decide which HW timer to use for the WWDGs see here: https://github.com/pkourany/SparkIntervalTimer#1-using-hardware-timers-
+ */
     PhotonWdgs::begin(true,true,10000,TIMER7);
     
 
@@ -44,8 +51,8 @@ void setup() {
 
 
 void loop() {
-
-    //PhotonWdgs::tickle();
+    // call tickle regularly from your code, to ensure the watchdogs do not reset
+    PhotonWdgs::tickle();
     if(lastmsg + 3000UL < millis()){
         Particle.publish("watchdog_test", "ALIVE!");
         lastmsg = millis();
