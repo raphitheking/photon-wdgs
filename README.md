@@ -73,3 +73,8 @@ If you accidently started the watchdog in your code and you do not call tickle s
 4. Release the SETUP button
 5. Flash another piece of software
 
+## Contribute
+Please consider following rules when contributing to this library:
+1. Follow the library style guide introduced in particle [uber-library-example](https://github.com/spark/uber-library-example/blob/master/doc/firmware-code-conventions.md).
+2. Changes require an bug or enhancement issue first. Work shall be done in an extra branch named dev-${issue number}.
+3. If you are not a direct contributor and what to have something changed, post an issue (bug or enhancement) and create a pull request if you want to fix it on your own.
