@@ -44,7 +44,7 @@ void PhotonWdgs::_tickleWDGs()
     }
     // deactivate WWDG if OTA updates pending
     if(System.updatesPending()) {
-        if(PhotonWdgs::_wwdg_running) {
+        if(PhotonWdgs::_wwdgRunning) {
             WWDG_DeInit();
         }
         System.enableUpdates();
