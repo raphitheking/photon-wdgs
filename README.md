@@ -23,6 +23,7 @@ SOFTWARE.
 */
 # photon-wdgs
 Library to employ independent and window watchdogs of STM32F205 for the Particle Photon with the help of hardware timers.
+See: http://stasheddragon.com/2015/watchdog-library-for-particle-photon/
 
 # Why?
 Sometimes faults can happen. Maybe its a bit in your code that gets flipped in ram, or a simple programming bug in your software. Electronic devices can get stuck and when this happens a watchdog is able to detect the problem and reset your device. This is especially helpful when you want to use your photon 24/7 or in hard to reach places.  
