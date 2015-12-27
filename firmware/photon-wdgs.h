@@ -51,9 +51,8 @@ namespace PhotonWdgs{
      */
     void tickle();
       
-      
-
-
-
+    /* @brief Deinitializes the window watchdog. This won't affect the IWDG if running.
+     */
+    void stopWwdg();
 }
 #endif

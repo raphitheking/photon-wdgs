@@ -89,3 +89,7 @@ void PhotonWdgs::tickle()
     PhotonWdgs::_aliveCount = 0;
 }
 
+void PhotonWdgs::stopWwdg()
+{
+    WWDG_DeInit();
+}
