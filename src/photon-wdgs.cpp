@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Kevin Kasal, Alexander Partsch
+Copyright (c) 2019 Kevin Kasal, Alexander Partsch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,23 @@ unsigned long PhotonWdgs::_aliveCount;
 unsigned long PhotonWdgs::_timeoutval;
 bool PhotonWdgs::_wwdgRunning;
 bool PhotonWdgs::_iwdgRunning;
+bool PhotonWdgs::_updateWasForced;
 
+
+void PhotonWdgs::disableWWDG(){
+    if(PhotonWdgs::_wwdgRunning && PhotonWdgs::_updateWasForced == false) {
+        WWDG_DeInit();
+    }
+    System.enableUpdates();
+    PhotonWdgs::_wdgTimer.end();
+    
+}
 
 
 void PhotonWdgs::_tickleWDGs() 
 {
     if(_aliveCount < PhotonWdgs::_timeoutval) {
-        if(PhotonWdgs::_wwdgRunning) {
+        if(PhotonWdgs::_wwdgRunning && PhotonWdgs::_updateWasForced == false) {
             WWDG_SetCounter(0x7F);
         }
         if(PhotonWdgs::_iwdgRunning) {
@@ -42,14 +52,17 @@ void PhotonWdgs::_tickleWDGs()
         }
         PhotonWdgs::_aliveCount++;
     }
-    // deactivate WWDG if OTA updates pending
-    if(System.updatesPending()) {
-        if(PhotonWdgs::_wwdgRunning) {
-            WWDG_DeInit();
-        }
-        System.enableUpdates();
-        PhotonWdgs::_wdgTimer.end();
+    if(System.updatesForced()){
+        WWDG_DeInit();
+        PhotonWdgs::_updateWasForced = true;
+    }else if(PhotonWdgs::_updateWasForced){
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_WWDG, ENABLE);
+        WWDG_SetPrescaler(WWDG_Prescaler_8);
+        WWDG_SetWindowValue(0x7F);
+        WWDG_Enable(0x7F);
+        PhotonWdgs::_updateWasForced = false;
     }
+
 }
 
 void PhotonWdgs::begin(bool _enableWwdg,bool _enableIwdg,unsigned long _timeout, TIMid id) 
@@ -82,10 +95,13 @@ void PhotonWdgs::begin(bool _enableWwdg,bool _enableIwdg,unsigned long _timeout,
         IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
         IWDG_Enable();
     }
+    PhotonWdgs::_updateWasForced = false;
+
 }
 
 void PhotonWdgs::tickle() 
 {
     PhotonWdgs::_aliveCount = 0;
 }
+
 

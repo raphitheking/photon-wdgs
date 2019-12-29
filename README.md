@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Kevin Kasal, Alexander Partsch
+Copyright (c) 2019 Kevin Kasal, Alexander Partsch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ SOFTWARE.
 */
 # photon-wdgs
 Library to employ independent and window watchdogs of STM32F205 for the Particle Photon with the help of hardware timers.
-See: http://stasheddragon.com/2015/watchdog-library-for-particle-photon/
+
 
 # Why?
 Sometimes faults can happen. Maybe its a bit in your code that gets flipped in ram, or a simple programming bug in your software. Electronic devices can get stuck and when this happens a watchdog is able to detect the problem and reset your device. This is especially helpful when you want to use your photon 24/7 or in hard to reach places.  
@@ -34,10 +34,12 @@ Normally you should use the Particle WebIDE to include this Project, but you cou
 ## Usage
 Simply call `PhotonWdgs::begin` to start the watchdog, and reset it regularly by calling `PhotonWdgs::tickle()`
 ** IMPORTANT:
-This library depends on the library [SparkIntervalTimer|https://github.com/pkourany/SparkIntervalTimer], so you must include it in your project as well **
+OTA: This library depends on forced OTA, which is available as of Device Firmware 1.2; You need to force enable OTA before updating. Internally the library detects the forced OTA and disables the window watchdog. Please don't use the independent watchdog if you want OTA, _except_ you really need to and it is safe if your device looses it's programm or reboots (Most of the time nothing bad will happen) - It is possible that the Photon resets during an firmware update **
+
+
 
 ** IMPORTANT:
-The current status of the library does _not_ support sleeping once you started the watchdog(s) this will change in a future version, however please consider this if you are trying to run your project from batteries **
+If you want to enter sleep mode, you can only use the WWDG(Window Watchdog) as the Independant Watchdog can't be stopped **
 
 ### begin(bool \_enable\_wwdg,bool \_enable\_iwdg,unsigned long \_timeout, TIMid id)
 Starts one or both watchdogs. The first two parameters are
@@ -62,6 +64,10 @@ library. We recommend using TIMER7 if not otherwhise used in one of Projects.
 ### tickle()
 
 Call this function to reset the watchdog.
+
+### disableWWDG()
+
+Call this function to stop the Window Watchdog - Use before sleeping, otherwise the device will reset.
 
 ## If something goes wrong
 

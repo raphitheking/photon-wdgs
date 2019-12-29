@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Kevin Kasal, Alexander Partsch
+Copyright (c) 2019 Kevin Kasal, Alexander Partsch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,11 @@ namespace PhotonWdgs{
     extern unsigned long _timeoutval;
     extern bool _wwdgRunning;
     extern bool _iwdgRunning;
+    extern bool _updateWasForced;
     
     void _tickleWDGs();
+
+    
 
     
     //_timeout = timout for calling tickle in msec (percision = 10ms)
@@ -50,7 +53,10 @@ namespace PhotonWdgs{
      * the specified timeout is reached, the watchdog(s) will reset.
      */
     void tickle();
-      
+    
+    /* @brief Disable the WWDG (also used on OTA) -
+     * IWDG cant be disabled once started without reset */
+    void disableWWDG();
       
 
 
